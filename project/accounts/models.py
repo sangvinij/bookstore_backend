@@ -1,12 +1,6 @@
 from sqlalchemy import Column, String, Integer
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import MetaData
 
-metadata = MetaData()
-
-
-class Base(DeclarativeBase):
-    pass
+from project.db_settings import Base
 
 
 class User(Base):
