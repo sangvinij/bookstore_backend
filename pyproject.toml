@@ -16,6 +16,8 @@ pydantic = "^2.3.0"
 fastapi-users = {extras = ["oauth", "sqlalchemy"], version = "^12.1.2"}
 asyncpg = "^0.28.0"
 shortuuid = "^1.0.11"
+fastapi-mail = "^1.4.1"
+fastapi-pagination = {extras = ["sqlalchemy"], version = "^0.12.9"}
 
 
 [build-system]
