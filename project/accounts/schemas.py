@@ -1,3 +1,4 @@
+import datetime
 import uuid
 from typing import Any, Optional, Union
 
@@ -10,12 +11,13 @@ from fastapi_users import schemas, models as fu_models
 class UserRead(schemas.BaseUser[uuid.UUID]):
     id: fu_models.ID
     email: EmailStr
-    first_name: str
-    last_name: str
+    first_name: Optional[str]
+    last_name: Optional[str]
     role: str
     is_active: bool
     is_superuser: bool
     is_verified: bool
+    registered_at: datetime.datetime
 
 
 class UserCreate(schemas.BaseUserCreate):
@@ -24,16 +26,14 @@ class UserCreate(schemas.BaseUserCreate):
     role: Optional[str] = "Buyer"
     first_name: Optional[str] = None
     last_name: Optional[str] = None
-    is_active: Optional[bool] = False
-    is_superuser: Optional[bool] = False
-    is_verified: Optional[bool] = False
 
 
 class UserUpdate(schemas.BaseUserUpdate):
     password: Optional[str] = None
     email: Optional[EmailStr] = None
     first_name: Optional[str] = None
-    role: Optional[str]
+    last_name: Optional[str] = None
+    role: Optional[str] = None
     is_active: Optional[bool] = None
     is_superuser: Optional[bool] = None
     is_verified: Optional[bool] = None

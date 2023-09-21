@@ -1,4 +1,4 @@
-from fastapi_users.authentication import CookieTransport, JWTStrategy
+from fastapi_users.authentication import BearerTransport, JWTStrategy
 
 from project.accounts.backends import CustomAuthenticationBackend
 from project.accounts.models import User
@@ -9,7 +9,7 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends
 
-cookie_transport = CookieTransport(cookie_name="bond", cookie_max_age=3600)
+bearer_transport = BearerTransport(tokenUrl="auth/users/login")
 
 
 def get_jwt_strategy() -> JWTStrategy:
@@ -18,7 +18,7 @@ def get_jwt_strategy() -> JWTStrategy:
 
 auth_backend = CustomAuthenticationBackend(
     name="jwt",
-    transport=cookie_transport,
+    transport=bearer_transport,
     get_strategy=get_jwt_strategy,
 )
 

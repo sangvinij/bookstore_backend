@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     MAIL_FROM: Optional[EmailStr]
     MAIL_PORT: Optional[int]
     MAIL_SERVER: Optional[str]
+    SUPERUSER_EMAIL: str
+    SUPERUSER_PASSWORD: str
     WEBAPP_HOST: str
     SUPPRESS_SEND: int = 0
 
