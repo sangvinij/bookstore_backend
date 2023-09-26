@@ -1,0 +1,71 @@
+name: build_and_tests
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4.5.0
+
+        with:
+          python-version: "3.11.5"
+
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v8
+        with:
+          poetry-version: '1.6.1'
+
+      - name: Install requirements
+        run: poetry install
+
+      - name: Run black
+        run: poetry run black . --check
+
+      - name: Run Flake8
+        run: poetry run flake8 .
+
+      - name: Create .env file
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "WEBAPP_HOST=${{ secrets.WEBAPP_HOST }}" >> .env
+          echo "SUPPRESS_SEND=${{ secrets.SUPPRESS_SEND }}" >> .env
+          echo "SUPERUSER_EMAIL=${{ secrets.SUPERUSER_EMAIL }}" >> .env
+          echo "SUPERUSER_PASSWORD=${{ secrets.SUPERUSER_PASSWORD }}" >> .env
+          
+          echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
+          echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
+          echo "MAIL_FROM=${{ secrets.MAIL_FROM }}" >> .env
+          echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> .env
+          echo "MAIL_SERVER=${{ secrets.MAIL_SERVER }}" >> .env 
+          
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+          
+          echo "PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_DEFAULT_EMAIL }}" >> .env
+          echo "PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_DEFAULT_PASSWORD }}" >> .env
+          
+          echo "ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}" >> .env
+          echo "HOST_FOR_TESTS=${{ secrets.HOST_FOR_TESTS }}" >> .env
+
+      - name: build
+        run: |
+          docker-compose up -d db
+          docker-compose up -d pgadmin
+          docker-compose up -d webapp
+
+      - name: run tests
+        run: |
+          docker-compose up tests
+          exit $(docker wait bookstore.tests)

@@ -1,0 +1,79 @@
+version: '3.9'
+services:
+
+  db:
+    container_name: bookstore.db
+    image: postgres:16.0
+    networks: 
+      - bookstore
+    restart: always
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env
+    volumes:
+      - .local/services/db:/var/lib/postgresql/data
+    init: true
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  pgadmin:
+    container_name: bookstore.pgadmin
+    image: dpage/pgadmin4:7.7
+    env_file:
+      - .env
+    volumes:
+      - .local/services/pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: always
+    networks:
+      - bookstore
+    depends_on:
+      - db
+
+  webapp:
+    build:
+      args:
+        - PIP_VERSION=${WEBAPP_PIP_VERSION:-23.2.21}
+        - POETRY_VERSION=${WEBAPP_POETRY_VERSION:-1.6.1}
+        - PYTHON_VERSION=${WEBAPP_PYTHON_VERSION:-3.11}
+        - VERSION=${WEBAPP_VERSION:-dev}
+      context: .
+    container_name: bookstore.webapp
+    image: bookstore_webapp:latest
+    env_file:
+      - .env
+    networks:
+      - bookstore
+    ports:
+      - "8000:8000"
+    volumes:
+      - .local/services/webapp:/app/:ro
+    init: true
+    depends_on:
+      - db
+
+  tests:
+    container_name: bookstore.tests
+    image: bookstore_webapp:latest
+    env_file:
+      - .env
+    networks:
+      - bookstore
+    volumes:
+      -  .local/services/webapp_tests:/app/
+    entrypoint: ["entrypoints/entrypoint_tests.sh"] 
+    init: true
+    depends_on:
+      webapp:
+        condition: service_healthy
+
+networks:
+  bookstore:
+    name: bookstore.network
+    driver: bridge
