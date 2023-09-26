@@ -63,10 +63,12 @@ jobs:
         run: |
           docker-compose up -d db
           docker-compose up -d pgadmin
-          docker-compose build
 
       - name: start webapp
-        run: docker-compose up webapp
+        run: |
+          docker ps
+          sleep 60
+          docker-compose up webapp
 
       - name: stop services
         run: docker-compose stop
