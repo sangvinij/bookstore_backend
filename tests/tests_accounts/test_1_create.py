@@ -18,7 +18,7 @@ class TestCreate:
             role="buyer",
         )
 
-        assert rs.status_code == 400
+        assert rs.status_code == 201
         created_user_data = rs.json()
 
         user = UserRead(**created_user_data)
