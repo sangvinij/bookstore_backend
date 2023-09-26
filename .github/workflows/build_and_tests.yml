@@ -34,36 +34,40 @@ jobs:
       - name: Run Flake8
         run: poetry run flake8 .
 
+      - name: Create .env file
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          
+          echo "MAIL_USERNAME"="{{ secrets.MAIL_USERNAME }}" >> .env
+          echo "MAIL_PASSWORD"="{{ secrets.MAIL_PASSWORD }}" >> .env
+          echo "MAIL_FROM"="{{ secrets.MAIL_FROM }}" >> .env
+          echo "MAIL_PORT"="{{ secrets.MAIL_PORT }}" >> .env
+          echo "MAIL_SERVER"="{{ secrets.MAIL_SERVER }}" >> .env
+          
+          echo "WEBAPP_HOST"="{{ secrets.WEBAPP_HOST }}" >> .env
+          echo "SUPPRESS_SEND"="{{ secrets.SUPPRESS_SEND }}" >> .env
+          echo "SUPERUSER_EMAIL"="{{ secrets.SUPERUSER_EMAIL }}" >> .env
+          echo "SUPERUSER_PASSWORD"="{{ secrets.SUPERUSER_PASSWORD }}" >> .env
+          
+          echo "POSTGRES_USER"="{{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD"="{{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB"="{{ secrets.POSTGRES_DB }}" >> .env
+          
+          echo "PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_DEFAULT_EMAIL }}" >> .env
+          echo "PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_DEFAULT_PASSWORD }}" >> .env
+          
+          echo "ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}" >> .env
+          echo "HOST_FOR_TESTS=${{ secrets.HOST_FOR_TESTS }}" >> .env
+
       - name: build
-        env:
-            POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-            POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-            POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-            ACCEPT_EULA: Y
-            MSSQL_SA_PASSWORD: ${{ secrets.MSSQL_DATABASE_PASSWORD }}
-            MSSQL_PID: Developer
-            PIP_VERSION: ${{ secrets.WEBAPP_PIP_VERSION || '23.1.2' }}
-            POETRY_VERSION: ${{ secrets.WEBAPP_POETRY_VERSION || '1.5.1' }}
-            PYTHON_VERSION: ${{ secrets.WEBAPP_PYTHON_VERSION || '3.11.3' }}
-            VERSION: ${{ secrets.WEBAPP_VERSION || 'dev' }}
-            SECRET_KEY: ${{ secrets.SECRET_KEY }}
-            PRIMARY_DATABASE_URL: ${{ secrets.PRIMARY_DATABASE_URL }}
-            DEBUG_MODE: ${{ secrets.DEBUG_MODE }}
-            ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
-            REDIS_DSN: ${{ secrets.REDIS_DSN }}
-            WEBAPP_HOST: ${{ secrets.WEBAPP_HOST }}
-            MSSQL_DATABASE_HOST: ${{ secrets.MSSQL_DATABASE_HOST }}
-            MSSQL_DATABASE_NAME: ${{ secrets.MSSQL_DATABASE_NAME }}
-            MSSQL_DATABASE_PASSWORD: ${{ secrets.MSSQL_DATABASE_PASSWORD }}
-            MSSQL_DATABASE_PORT: ${{ secrets.MSSQL_DATABASE_PORT }}
-            MSSQL_DATABASE_USERNAME: ${{ secrets.MSSQL_DATABASE_USERNAME }}
-            DJANGO_SUPERUSER_USERNAME: ${{ secrets.DJANGO_SUPERUSER_USERNAME }}
-            DJANGO_SUPERUSER_PASSWORD: ${{ secrets.DJANGO_SUPERUSER_USERNAME }}
-            HOST_FOR_TESTS: ${{ secrets.HOST_FOR_TESTS }}
-        run: docker-compose up -d
-            
-      - name: Run tests
-        run: docker exec journal.webapp bash run-test.sh
+        run: | 
+          docker-compose up -d db
+          docker-compose up -d pgadmin
+          docker-compose up -d webapp
+
+      - name: run tests 
+          docker-compose up tests
 
       - name: stop services
         run: docker-compose stop
