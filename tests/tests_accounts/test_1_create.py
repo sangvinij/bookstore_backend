@@ -1,5 +1,7 @@
 from project.accounts.schemas import UserRead
+
 from tests.conftest import user_api
+
 from .conftest import generate_credentials
 
 
@@ -57,7 +59,6 @@ class TestCreate:
 
         assert user.email == self.email
         assert user.role == "buyer"
-
 
         rs2 = user_api.delete(user.id, superuser_token=superuser_token)
         assert rs2.status_code == 204

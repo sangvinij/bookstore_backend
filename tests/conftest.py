@@ -1,6 +1,7 @@
+from project.env_config import env
+
 import pytest
 
-from project.env_config import env
 from tests.tests_accounts.utils.api_cls import UserAPI
 
 user_api = UserAPI()

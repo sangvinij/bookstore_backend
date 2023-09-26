@@ -1,5 +1,7 @@
 from project.accounts.schemas import UserRead
+
 from tests.conftest import user_api
+
 from .conftest import generate_credentials
 
 
@@ -52,11 +54,7 @@ class TestUpdate:
         superuser_token = superuser_credentials["superuser_token"]
         user = user_data["user"]
 
-        rs = user_api.update(
-            user_id=user["id"],
-            superuser_token=superuser_token,
-            role="wrong_role"
-        )
+        rs = user_api.update(user_id=user["id"], superuser_token=superuser_token, role="wrong_role")
 
         assert rs.status_code == 400
         assert rs.json()["detail"] == "wrong statement for role"
@@ -67,11 +65,7 @@ class TestUpdate:
 
         password = generate_credentials()["password"]
 
-        rs = user_api.update(
-            user_id=user["id"],
-            superuser_token=superuser_token,
-            password=password
-        )
+        rs = user_api.update(user_id=user["id"], superuser_token=superuser_token, password=password)
 
         assert rs.status_code == 200
 

@@ -2,4 +2,4 @@
 
 echo 'RUN TEST'
 
-pytest -s
+pytest -s --no-cacheprovider

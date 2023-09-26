@@ -1,11 +1,10 @@
 import datetime
 import uuid
-from typing import Any, Optional, Union
+from typing import Optional
 
-import shortuuid
-from pydantic import EmailStr, BaseModel
+from fastapi_users import models as fu_models, schemas
 
-from fastapi_users import schemas, models as fu_models
+from pydantic import BaseModel, EmailStr
 
 
 class UserRead(schemas.BaseUser[uuid.UUID]):

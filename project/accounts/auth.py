@@ -1,13 +1,15 @@
-from fastapi_users.authentication import BearerTransport, JWTStrategy
+from fastapi import Depends
 
-from project.accounts.backends import CustomAuthenticationBackend
-from project.accounts.models import User
-from project.env_config import env
+from fastapi_users.authentication import BearerTransport, JWTStrategy
+from fastapi_users.db import SQLAlchemyUserDatabase
 
 from project.db_settings import get_async_session
-from fastapi_users.db import SQLAlchemyUserDatabase
+from project.env_config import env
+
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import Depends
+
+from .backends import CustomAuthenticationBackend
+from .models import User
 
 bearer_transport = BearerTransport(tokenUrl="auth/users/login")
 

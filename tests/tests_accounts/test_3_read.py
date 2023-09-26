@@ -1,11 +1,10 @@
 from project.accounts.schemas import UserRead
-from tests.tests_accounts.utils.schemas import UserList
 
 from tests.conftest import user_api
+from tests.tests_accounts.utils.schemas import UserList
 
 
 class TestListRead:
-
     def test_user_list_endpoint_inaccessible_for_non_authorized(self):
         rs = user_api.get_users_list(superuser_token=None)
         assert rs.status_code == 401

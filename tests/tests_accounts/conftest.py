@@ -1,4 +1,4 @@
-import random
+import secrets
 import string
 
 import pytest
@@ -7,8 +7,8 @@ from tests.conftest import user_api
 
 
 def generate_credentials():
-    email = "test." + "".join(random.choices(string.ascii_lowercase, k=6)) + '@example.com'
-    password = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+    email = "test." + "".join(secrets.choice(string.ascii_lowercase) for _ in range(6)) + "@example.com"
+    password = "".join(secrets.choice(string.ascii_letters + string.digits) for _ in range(8))
     return {"email": email, "password": password}
 
 
@@ -36,8 +36,9 @@ def consultant(superuser_credentials):
 
     user = user_api.create(email, password).json()
 
-    consultant = user_api.update(user_id=user["id"], superuser_token=superuser_token,
-                                 is_verified=True, role="consultant").json()
+    consultant = user_api.update(
+        user_id=user["id"], superuser_token=superuser_token, is_verified=True, role="consultant"
+    ).json()
 
     yield consultant
 
@@ -51,8 +52,9 @@ def manager(superuser_credentials):
 
     user = user_api.create(email, password).json()
 
-    manager = user_api.update(user_id=user["id"], superuser_token=superuser_token,
-                              is_verified=True, role="manager").json()
+    manager = user_api.update(
+        user_id=user["id"], superuser_token=superuser_token, is_verified=True, role="manager"
+    ).json()
 
     yield manager
 

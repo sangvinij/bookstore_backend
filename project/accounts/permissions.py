@@ -2,9 +2,9 @@ import uuid
 
 from fastapi_users import FastAPIUsers
 
-from project.accounts.auth import auth_backend
-from project.accounts.manager import get_user_manager
-from project.accounts.models import User
+from .auth import auth_backend
+from .manager import get_user_manager
+from .models import User
 
 users = FastAPIUsers[User, uuid.UUID](
     get_user_manager,

@@ -31,8 +31,9 @@ class TestVerify:
 
         assert valid_verify_rs.json()["detail"] == "user successfully verified"
 
-        check_verified_status_rs = user_api.get_detailed_info_about_user(user_id=user["id"],
-                                                                         superuser_token=superuser_token)
+        check_verified_status_rs = user_api.get_detailed_info_about_user(
+            user_id=user["id"], superuser_token=superuser_token
+        )
 
         assert check_verified_status_rs.json()["is_verified"]
 

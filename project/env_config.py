@@ -1,11 +1,12 @@
 from typing import Optional
 
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import EmailStr
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(case_sensitive=True, env_file='.env', env_file_encoding='utf-8', extra="ignore")
+    model_config = SettingsConfigDict(case_sensitive=True, env_file=".env", env_file_encoding="utf-8", extra="ignore")
     DATABASE_URL: str
     SECRET_KEY: str
     MAIL_USERNAME: Optional[str] = None
@@ -17,7 +18,7 @@ class Settings(BaseSettings):
     SUPERUSER_PASSWORD: str
     WEBAPP_HOST: str
     SUPPRESS_SEND: int = 0
-    ALLOWED_HOSTS: str = '*'
+    ALLOWED_HOSTS: str = "*"
     HOST_FOR_TESTS: str
 
 

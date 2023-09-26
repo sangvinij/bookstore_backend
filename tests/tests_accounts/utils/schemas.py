@@ -1,7 +1,8 @@
 from typing import List
 
-from pydantic import BaseModel
 from project.accounts.schemas import UserRead
+
+from pydantic import BaseModel
 
 
 class UserList(BaseModel):

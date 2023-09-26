@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from project.accounts.routers import accounts_router
@@ -8,7 +8,7 @@ app = FastAPI()
 app.include_router(accounts_router)
 
 
-@app.get('/')
+@app.get("/")
 def index():
     return {}
 

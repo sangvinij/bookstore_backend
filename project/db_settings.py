@@ -1,10 +1,11 @@
 from typing import AsyncGenerator
 
-from sqlalchemy.orm import DeclarativeBase
+from project.env_config import env
+
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase
 
-from project.env_config import env
 
 engine = create_async_engine(env.DATABASE_URL, echo=True)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)

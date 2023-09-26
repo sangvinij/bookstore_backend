@@ -1,4 +1,5 @@
 from tests.conftest import user_api
+
 from .conftest import generate_credentials
 
 
@@ -23,7 +24,9 @@ class TestLogin:
         password = user_data["password"]
         user_id = user_data["user"]["id"]
 
-        update_is_verify_status_rs = user_api.update(user_id=user_id, superuser_token=superuser_token, is_verified=False)
+        update_is_verify_status_rs = user_api.update(
+            user_id=user_id, superuser_token=superuser_token, is_verified=False
+        )
 
         assert update_is_verify_status_rs.status_code == 200
         assert update_is_verify_status_rs.json()["is_verified"] is False
@@ -36,7 +39,6 @@ class TestLogin:
     def test_get_access_to_protected_endpoint(self, user_data):
         token = user_data["token"]
         email = user_data["email"]
-
 
         failed_rs = user_api.get_update_current_user(method="get", token="wrong token")
         assert failed_rs.status_code == 401

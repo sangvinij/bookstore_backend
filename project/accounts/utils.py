@@ -1,11 +1,13 @@
-import secrets
 import hashlib
+import secrets
 import uuid
 
-from project.accounts.models import User
+from fastapi_mail import FastMail, MessageSchema
+
 from project.email import conf
 from project.env_config import env
-from fastapi_mail import MessageSchema, FastMail
+
+from .models import User
 
 
 def generate_verification_code(length: int = 32) -> str:
@@ -13,9 +15,9 @@ def generate_verification_code(length: int = 32) -> str:
     return token
 
 
-def hash_verification_code(token, algorithm: str = 'sha256') -> str:
+def hash_verification_code(token, algorithm: str = "sha256") -> str:
     hasher = hashlib.new(algorithm)
-    hasher.update(token.encode('utf-8'))
+    hasher.update(token.encode("utf-8"))
     hashed_token = hasher.hexdigest()
     return hashed_token
 
@@ -27,10 +29,7 @@ def get_verification_url(user_id: uuid.UUID, token: str) -> str:
 
 async def send_verification_email(user: User, url: str):
     message = MessageSchema(
-        subject="Verification",
-        recipients=[user.email],
-        body=f"Please verify your email: {url}",
-        subtype="plain"
+        subject="Verification", recipients=[user.email], body=f"Please verify your email: {url}", subtype="plain"
     )
     mail = FastMail(conf)
 
