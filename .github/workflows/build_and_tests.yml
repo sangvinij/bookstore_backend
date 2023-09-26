@@ -67,5 +67,6 @@ jobs:
 
       - name: run tests
         run: |
+          sleep 20
           docker-compose up tests
           exit $(docker wait bookstore.tests)
