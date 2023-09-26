@@ -60,11 +60,7 @@ jobs:
           echo "HOST_FOR_TESTS=${{ secrets.HOST_FOR_TESTS }}" >> .env
 
       - name: build
-        run: | 
-          docker-compose up -d db
-          docker-compose up -d pgadmin
-          sleep 30
-          docker-compose up -d webapp
+        run: docker-compose up -d db && docker-compose up -d pgadmin && docker-compose up -d webapp
 
       - name: run tests 
         run: docker-compose up tests
