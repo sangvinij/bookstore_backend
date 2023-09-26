@@ -69,6 +69,3 @@ jobs:
         run: |
           docker-compose up tests
           exit $(docker wait bookstore.tests)
-
-      - name: stop services
-        run: docker-compose stop
