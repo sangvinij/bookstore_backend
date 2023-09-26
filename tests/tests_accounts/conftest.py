@@ -37,7 +37,7 @@ def consultant(superuser_credentials):
     user = user_api.create(email, password).json()
 
     consultant = user_api.update(user_id=user["id"], superuser_token=superuser_token,
-                                 is_verified=True, role="Consultant").json()
+                                 is_verified=True, role="consultant").json()
 
     yield consultant
 
@@ -52,7 +52,7 @@ def manager(superuser_credentials):
     user = user_api.create(email, password).json()
 
     manager = user_api.update(user_id=user["id"], superuser_token=superuser_token,
-                              is_verified=True, role="Manager").json()
+                              is_verified=True, role="manager").json()
 
     yield manager
 

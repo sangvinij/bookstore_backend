@@ -1,7 +1,4 @@
 import uuid
-from datetime import datetime, timedelta
-
-from asyncpg.exceptions import InvalidTextRepresentationError
 from fastapi import HTTPException
 
 from fastapi_users import exceptions, models, schemas
@@ -15,6 +12,7 @@ from project.accounts.models import User
 from project.accounts.utils import hash_verification_code, get_verification_url, \
     generate_verification_code, send_verification_email
 from project.config import VERIFICATION_CODE_TTL
+
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 
@@ -38,7 +36,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
         )
         password = user_dict.pop("password")
         user_dict["hashed_password"] = self.password_helper.hash(password)
-        user_dict["role"] = "Buyer"
+        user_dict["role"] = "buyer"
 
         created_user = await self.user_db.create(user_dict)
         try:
@@ -65,11 +63,11 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
             await send_verification_email(user, url)
 
     async def update(
-        self,
-        user_update: schemas.UU,
-        user: models.UP,
-        safe: bool = False,
-        request: Optional[Request] = None,
+            self,
+            user_update: schemas.UU,
+            user: models.UP,
+            safe: bool = False,
+            request: Optional[Request] = None,
     ) -> models.UP:
 
         if safe:
@@ -77,11 +75,10 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
         else:
             updated_user_data = user_update.create_update_dict_superuser()
 
-        if "role" in updated_user_data and updated_user_data["role"] not in ("Buyer", "Consultant", "Manager"):
+        if "role" in updated_user_data and updated_user_data["role"] not in ("buyer", "consultant", "manager"):
             raise HTTPException(status_code=400, detail="wrong statement for role")
 
         updated_user = await self._update(user, updated_user_data)
-
 
         return updated_user
 

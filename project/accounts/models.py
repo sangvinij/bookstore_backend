@@ -11,7 +11,7 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
     __tablename__ = "user"
     first_name: Mapped[str] = mapped_column(String(length=255), nullable=True)
     last_name: Mapped[str] = mapped_column(String(length=255), nullable=True)
-    role: Mapped[Enum] = mapped_column(Enum("Manager", "Buyer", "Consultant", name="user_role"), default="buyer")
+    role: Mapped[Enum] = mapped_column(Enum("manager", "buyer", "consultant", name="user_role"), default="buyer")
     verification_code: Mapped[str] = mapped_column(String(length=255), nullable=True)
     verification_code_expiry: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     email: Mapped[str] = mapped_column(String(length=320), unique=True, index=True, nullable=False)

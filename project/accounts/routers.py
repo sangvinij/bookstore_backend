@@ -3,7 +3,7 @@ from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, Body, Query
 from fastapi.responses import JSONResponse
-from fastapi_pagination import Page, add_pagination, Params
+from fastapi_pagination import Page, add_pagination
 from fastapi_pagination.ext.sqlalchemy import paginate
 
 from project.accounts.auth import auth_backend
@@ -115,7 +115,7 @@ async def get_list_of_users(
         query = query.order_by(sort_by)
 
     if role:
-        if role not in ("Buyer", "Consultant", "Manager"):
+        if role not in ("buyer", "consultant", "manager"):
             raise HTTPException(status_code=400, detail="wrong statement for role")
         else:
             query = query.filter_by(role=role)

@@ -6,7 +6,7 @@ from project.env_config import env
 
 
 class UserAPI:
-    ENDPOINT = f"{env.WEBAPP_HOST}/auth/users"
+    ENDPOINT = f"{env.HOST_FOR_TESTS}/auth/users"
 
     def create(self, email: str, password: str, **kwargs) -> requests.models.Response:
         data = {

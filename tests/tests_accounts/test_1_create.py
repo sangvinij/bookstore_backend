@@ -13,7 +13,7 @@ class TestCreate:
             password=self.password,
             first_name="test_name",
             last_name="test_last_name",
-            role="Buyer",
+            role="buyer",
         )
 
         assert rs.status_code == 201
@@ -24,7 +24,7 @@ class TestCreate:
         assert user.email == self.email
         assert user.first_name == "test_name"
         assert user.last_name == "test_last_name"
-        assert user.role == "Buyer"
+        assert user.role == "buyer"
         assert user.is_active
         assert not user.is_superuser
         assert not user.is_verified
@@ -56,7 +56,7 @@ class TestCreate:
         user = UserRead(**rs.json())
 
         assert user.email == self.email
-        assert user.role == "Buyer"
+        assert user.role == "buyer"
 
 
         rs2 = user_api.delete(user.id, superuser_token=superuser_token)

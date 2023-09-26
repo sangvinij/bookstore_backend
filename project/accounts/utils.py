@@ -1,13 +1,11 @@
 import secrets
 import hashlib
 import uuid
-from typing import List, Optional, Union
 
 from project.accounts.models import User
 from project.email import conf
 from project.env_config import env
-from pydantic import EmailStr
-from fastapi_mail import MessageSchema, FastMail, MessageType
+from fastapi_mail import MessageSchema, FastMail
 
 
 def generate_verification_code(length: int = 32) -> str:

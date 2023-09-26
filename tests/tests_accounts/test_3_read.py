@@ -1,5 +1,5 @@
 from project.accounts.schemas import UserRead
-from .schemas import UserList
+from tests.tests_accounts.utils.schemas import UserList
 
 from tests.conftest import user_api
 
@@ -47,26 +47,26 @@ class TestListRead:
     def test_filter_by_role(self, superuser_credentials, manager, consultant):
         superuser_token = superuser_credentials["superuser_token"]
 
-        assert consultant["role"] == "Consultant"
-        assert manager["role"] == "Manager"
+        assert consultant["role"] == "consultant"
+        assert manager["role"] == "manager"
 
-        rs = user_api.get_users_list(superuser_token=superuser_token, role="Buyer")
+        rs = user_api.get_users_list(superuser_token=superuser_token, role="buyer")
         data = rs.json()
 
         assert rs.status_code == 200
-        assert all(user["role"] == "Buyer" for user in data["items"])
+        assert all(user["role"] == "buyer" for user in data["items"])
 
-        rs2 = user_api.get_users_list(superuser_token=superuser_token, role="Manager")
+        rs2 = user_api.get_users_list(superuser_token=superuser_token, role="manager")
         data2 = rs2.json()
 
         assert rs2.status_code == 200
-        assert all(user["role"] == "Manager" for user in data2["items"])
+        assert all(user["role"] == "manager" for user in data2["items"])
 
-        rs3 = user_api.get_users_list(superuser_token=superuser_token, role="Consultant")
+        rs3 = user_api.get_users_list(superuser_token=superuser_token, role="consultant")
         data3 = rs3.json()
 
         assert rs3.status_code == 200
-        assert all(user["role"] == "Consultant" for user in data3["items"])
+        assert all(user["role"] == "consultant" for user in data3["items"])
 
         rs4 = user_api.get_users_list(superuser_token=superuser_token, role="wrong role")
         assert rs4.status_code == 400

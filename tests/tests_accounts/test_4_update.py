@@ -29,7 +29,7 @@ class TestUpdate:
             "email": email,
             "first_name": "first name",
             "last_name": "last_name",
-            "role": "Consultant",
+            "role": "consultant",
             "is_active": False,
             "is_superuser": True,
             "is_verified": False,
