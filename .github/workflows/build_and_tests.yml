@@ -61,13 +61,13 @@ jobs:
 
       - name: build
         run: |
-          docker-compose up -d db
-          docker-compose up -d pgadmin
-          docker-compose up -d webapp
+          docker-compose up -d db --exit-code-from db
+          docker-compose up -d pgadmin --exit-code-from pgadmin
+          docker-compose up -d webapp --exit-code-from webapp
 
       - name: run tests
         run: |
-          docker-compose up tests --exit-code-from tests if: always()
+          docker-compose up tests --exit-code-from tests
 
       - name: stop services
         run: docker-compose stop
