@@ -62,7 +62,7 @@ jobs:
       - name: start db
         run: |
           docker-compose up -d db
-          docker-compose up - dpgadmin
+          docker-compose up -d pgadmin
           docker-compose build
 
       - name: start webapp
