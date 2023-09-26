@@ -16,7 +16,7 @@ services:
     init: true
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      interval: 5s
+      interval: 2s
       timeout: 5s
       retries: 5
       start_period: 5s
@@ -56,8 +56,7 @@ services:
       - .local/services/webapp:/app/:ro
     init: true
     depends_on:
-      db:
-        condition: service_healthy
+      - db
 
   tests:
     container_name: bookstore.tests
