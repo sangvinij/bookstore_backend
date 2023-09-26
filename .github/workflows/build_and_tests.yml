@@ -59,8 +59,11 @@ jobs:
           echo "ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}" >> .env
           echo "HOST_FOR_TESTS=${{ secrets.HOST_FOR_TESTS }}" >> .env
 
-      - name: build
-        run: docker-compose up db
+      - name: start db
+        run: docker-compose up -d db
+
+      - name: start webapp
+        run: docker-compose up webapp
 
       - name: stop services
         run: docker-compose stop
