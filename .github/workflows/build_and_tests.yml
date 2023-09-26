@@ -66,14 +66,9 @@ jobs:
           docker-compose up -d webapp
 
       - name: run tests
-        run: docker-compose up tests
-
-      - name: check test results
         run: |
-          if docker-compose logs tests | grep -q "FAILURES"; then
-            echo "Tests failed"
-            exit 1
-          fi
+          docker-compose up tests
+          exit $(docker wait bookstore.tests)
 
       - name: stop services
         run: docker-compose stop
