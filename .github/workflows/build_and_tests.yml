@@ -66,8 +66,6 @@ jobs:
 
       - name: start webapp
         run: |
-          docker ps
-          sleep 60
           docker-compose up webapp
 
       - name: stop services
