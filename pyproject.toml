@@ -19,6 +19,7 @@ shortuuid = "^1.0.11"
 fastapi-mail = "^1.4.1"
 fastapi-pagination = {extras = ["sqlalchemy"], version = "^0.12.9"}
 requests = "^2.31.0"
+sqladmin = "^0.15.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
